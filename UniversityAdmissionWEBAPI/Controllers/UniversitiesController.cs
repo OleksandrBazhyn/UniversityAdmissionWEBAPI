@@ -24,7 +24,17 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<University>>> GetUniversities()
         {
-            return await _context.Universities.ToListAsync();
+            var universities = await (from un in _context.Universities
+                                      select new
+                                      {
+                                          Id = un.Id,
+                                          Name = un.Name,
+                                          WebSiteLink = un.WebSiteLink,
+                                          AvgUniverityAdmissionGrade = un.AvgUniverityAdmissionGrade,
+                                          Description = un.Description
+                                      }).ToListAsync();
+
+            return Ok(universities);
         }
 
         // GET: api/Universities/5
@@ -38,7 +48,18 @@ namespace UniversityAdmissionWEBAPI.Controllers
                 return NotFound();
             }
 
-            return university;
+            var universities = await (from un in _context.Universities
+                                      where un.Id == id
+                                      select new
+                                      {
+                                          Id = un.Id,
+                                          Name = un.Name,
+                                          WebSiteLink = un.WebSiteLink,
+                                          AvgUniverityAdmissionGrade = un.AvgUniverityAdmissionGrade,
+                                          Description = un.Description
+                                      }).ToListAsync();
+
+            return Ok(universities);
         }
 
         // PUT: api/Universities/5
