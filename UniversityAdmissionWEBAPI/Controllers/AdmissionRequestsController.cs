@@ -45,6 +45,7 @@ namespace UniversityAdmissionWEBAPI.Controllers
             var admissionRequests = await (from ar in _context.AdmissionRequests
                                            join e in _context.Entrants on ar.EntrantID equals e.Id
                                            join u in _context.Universities on ar.UniversityID equals u.Id
+                                           where ar.Id == id
                                            select new
                                            {
                                                Id = ar.Id,
