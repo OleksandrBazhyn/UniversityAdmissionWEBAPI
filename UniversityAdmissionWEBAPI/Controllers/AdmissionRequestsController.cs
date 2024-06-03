@@ -42,6 +42,13 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AdmissionRequest>> GetAdmissionRequest(int id)
         {
+            var admissionrequest = await _context.AdmissionRequests.FindAsync(id);
+
+            if (admissionrequest == null)
+            {
+                return NotFound();
+            }
+
             var admissionRequests = await (from ar in _context.AdmissionRequests
                                            join e in _context.Entrants on ar.EntrantID equals e.Id
                                            join u in _context.Universities on ar.UniversityID equals u.Id

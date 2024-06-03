@@ -24,7 +24,16 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Entrant>>> GetEntrants()
         {
-            return await _context.Entrants.ToListAsync();
+            var entrants = await (from en in _context.Entrants
+                                         select new
+                                         {
+                                             Id = en.Id,
+                                             FirstName = en.FirstName,
+                                             LastName = en.LastName,
+                                             NationalExamGrade = en.NationalExamGrade,
+                                             IsPrivileged = en.IsPrivileged
+                                         }).ToListAsync();
+            return Ok(entrants);
         }
 
         // GET: api/Entrants/5
@@ -38,7 +47,18 @@ namespace UniversityAdmissionWEBAPI.Controllers
                 return NotFound();
             }
 
-            return entrant;
+            var entrants = await (from en in _context.Entrants
+                                  where en.Id == id
+                                  select new
+                                  {
+                                      Id = en.Id,
+                                      FirstName = en.FirstName,
+                                      LastName = en.LastName,
+                                      NationalExamGrade = en.NationalExamGrade,
+                                      IsPrivileged = en.IsPrivileged
+                                  }).ToListAsync();
+
+            return Ok(entrants);
         }
 
         // PUT: api/Entrants/5
