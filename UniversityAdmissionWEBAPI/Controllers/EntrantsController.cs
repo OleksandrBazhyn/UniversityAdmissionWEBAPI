@@ -107,13 +107,19 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntrant(int id)
         {
-            var entrant = await _context.Entrants.FindAsync(id);
-            if (entrant == null)
+            if (_context.Entrants == null)
             {
-                return NotFound();
+                return Problem("Entity set of Entrants is null.");
             }
 
-            _context.Entrants.Remove(entrant);
+            var entrant = await _context.Entrants.FindAsync(id);
+            if (entrant != null)
+            {
+                var dependedadmissionrequests = await _context.AdmissionRequests.Where(d => d.EntrantID == entrant.Id).ToListAsync();
+                _context.AdmissionRequests.RemoveRange(dependedadmissionrequests);
+                _context.Entrants.Remove(entrant);
+            }
+
             await _context.SaveChangesAsync();
 
             return NoContent();
