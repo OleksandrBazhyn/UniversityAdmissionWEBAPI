@@ -12,7 +12,7 @@ namespace UniversityAdmissionWEBAPI.Models
         [Required(ErrorMessage = "Поле не повинне бути порожнім")]
         public string LastName { get; set; } = string.Empty;
         [Required(ErrorMessage = "Поле не повинне бути порожнім")]
-        public int NationalExamGrade { get; set; }
+        public double NationalExamGrade { get; set; }
 
         public bool IsPrivileged { get; set; }
 
