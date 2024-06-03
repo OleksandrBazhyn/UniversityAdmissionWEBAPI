@@ -7,19 +7,23 @@
 </head>
 <body>
     <h1>Informatics-2024-Lab2 UniversityAdmission</h1>
-    <h3>Add FAQ</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addFAQ()">
-        <input type="text" id="add-question" placeholder="Question"/>
-        <input type="text" id="add-answer" placeholder="Answer"/>
+    <h3>Add Entrant</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="addEntrant()">
+        <input type="text" id="add-firstname" placeholder="FirstName"/>
+        <input type="text" id="add-lastname" placeholder="LastName"/>
+        <input type="text" id="add-nationalexamgrade" placeholder="NationalExamGrade"/>
+        <input type="checkbox" id="add-isprivileged" placeholder="Is privileged?"/>
         <input type="submit" value="Add" />
     </form>
 
-    <div id="editFAQ">
+    <div id="editEntrant">
         <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateFAQ()">
+        <form action="javascript:void(0);" onsubmit="updateEntrant()">
             <input type="hidden" id="edit-id" />
-            <input type="text" id="edit-question" />
-            <input type="text" id="edit-answer" />
+            <input type="text" id="add-firstname" />
+            <input type="text" id="add-lastname" />
+            <input type="text" id="add-nationalexamgrade" />
+            <input type="checkbox" id="add-isprivileged" />
             <input type="submit" value="Save" />
             <a onclick="closeInput()" aria-label="Close">&#10006;</a>
         </form>
@@ -29,15 +33,17 @@
 
     <table>
         <tr>
-            <th>Question</th>
-            <th>Answer</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>National Exam Grade</th>
+            <th>Is Privileged</th>
         </tr>
-        <tbody id="FAQs"></tbody>
+        <tbody id="Entrants"></tbody>
     </table>
 
     <script src="js/lab2.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        getFAQs();
+        getEntrants();
     </script>
 </body>
 </html>
