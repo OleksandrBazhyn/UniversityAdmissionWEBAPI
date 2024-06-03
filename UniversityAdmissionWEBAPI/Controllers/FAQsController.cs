@@ -87,7 +87,12 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFAQ(int id)
         {
+            if (_context.FAQs == null)
+            {
+                return Problem("Entity set of FAQs is null.");
+            }
             var fAQ = await _context.FAQs.FindAsync(id);
+
             if (fAQ == null)
             {
                 return NotFound();
