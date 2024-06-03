@@ -14,6 +14,7 @@ namespace UniversityAdmissionWEBAPI.Controllers
     public class AdmissionRequestsController : ControllerBase
     {
         private readonly UniversityAdmissionAPIContext _context;
+        private readonly string _connectionstring;
 
         public AdmissionRequestsController(UniversityAdmissionAPIContext context)
         {
@@ -24,21 +25,34 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AdmissionRequest>>> GetAdmissionRequests()
         {
-            return await _context.AdmissionRequests.ToListAsync();
+            var admissionRequests = await (from ar in _context.AdmissionRequests
+                                           join e in _context.Entrants on ar.EntrantID equals e.Id
+                                           join u in _context.Universities on ar.UniversityID equals u.Id
+                                           select new
+                                           {
+                                               Id = ar.Id,
+                                               UniversityName = u.Name,
+                                               EntrantName = $"{e.FirstName} {e.LastName}"
+                                           }).ToListAsync();
+
+            return Ok(admissionRequests);
         }
 
         // GET: api/AdmissionRequests/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AdmissionRequest>> GetAdmissionRequest(int id)
         {
-            var admissionRequest = await _context.AdmissionRequests.FindAsync(id);
+            var admissionRequests = await (from ar in _context.AdmissionRequests
+                                           join e in _context.Entrants on ar.EntrantID equals e.Id
+                                           join u in _context.Universities on ar.UniversityID equals u.Id
+                                           select new
+                                           {
+                                               Id = ar.Id,
+                                               UniversityName = u.Name,
+                                               EntrantName = $"{e.FirstName} {e.LastName}"
+                                           }).ToListAsync();
 
-            if (admissionRequest == null)
-            {
-                return NotFound();
-            }
-
-            return admissionRequest;
+            return Ok(admissionRequests);
         }
 
         // PUT: api/AdmissionRequests/5
@@ -77,6 +91,11 @@ namespace UniversityAdmissionWEBAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<AdmissionRequest>> PostAdmissionRequest(AdmissionRequest admissionRequest)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _context.AdmissionRequests.Add(admissionRequest);
             await _context.SaveChangesAsync();
 
